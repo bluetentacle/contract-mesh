@@ -100,7 +100,7 @@ features:
                 content:
                   application/json
                     schema:
-                      $ref: '#/entities/order/v1'
+                      $ref: '#/features/entities/order/v1'
         /orders:
           post:
             operationId: postOrder
@@ -108,7 +108,7 @@ features:
               content:
                 application/json
                   schema:
-                    $ref: '#entities/order/v1'
+                    $ref: '#/features/entities/order/v1'
             responses:
               200:
                 content:
@@ -122,7 +122,7 @@ features:
     order.created
       v1:
         schema:
-          $ref: '#/entities/order/v1'
+          $ref: '#/features/entities/order/v1'
   metrics:
     orderCount:
       type: counter
