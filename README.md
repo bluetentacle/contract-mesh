@@ -32,7 +32,7 @@ Contract Mesh consists of the following components:
 
 ### Service contracts
 
-<img src="assets/images/ContractMesh-Contracts.png" width="500"/>
+<img src="assets/images/ContractMesh-Contracts.png" width="700"/>
 
 A service contract is a YAML document with a *standard format*, which declares the *features* offered by a service, as well as the *dependencies* that it has on other services and resources.
 
@@ -169,9 +169,9 @@ dependencies:
 
 ### Service catalog
 
-<img src="assets/images/ContractMesh-Catalog.png" width="500"/>
+<img src="assets/images/ContractMesh-Catalog.png" width="700"/>
 
-The service catalog is a microservice that aggregates all contracts from all services available in an organization.
+The service catalog is a microservice that aggregates all service contracts in the organization into a topology of services that *could* be deployed to any environment.
 
 The catalog is populated by continuous integration. Whenever a service is built, the CI pipeline publishes the service's contract into the service catalog.
 
