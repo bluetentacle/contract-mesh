@@ -165,25 +165,24 @@ features:
         userName:
           type: string
 dependencies:
-  services:
-    productService:
-      version: 1.3
-      features:
-        apis:
+  productService:
+    version: 1.3
+    features:
+      apis:
+        v1:
+          getProductById:
+            resiliency:
+              timeout: 10s
+              retries: 3
+              circuitBreaker:
+                threshold: 10
+  pricingService:
+    version: 2.0
+    features:
+      events:
+        pricing.updated:
           v1:
-            getProductById:
-              resiliency:
-                timeout: 10s
-                retries: 3
-                circuitBreaker:
-                  threshold: 10
-    pricingService:
-      version: 2.0
-      features:
-        events:
-          pricing.updated:
-            v1:
-              action: consume
+            action: consume
 ```
 
 #### Authoring vs published formats
