@@ -236,15 +236,28 @@ The contract format is designed to be extensible. The extensibility points are:
 - Artifact types
 - Custom fields in any part of the document, named with the `x-` prefix
 
+#### Support for legacy and external services
+
+The service contract is not simply for new services that are built ground-up upon it. Legacy services of any type can also have contracts retroactively for them. These contracts most likely aren't used to generate code, but they can serve all other use cases.
+
+External services, such as those provided by third-party SaaS, can also be represented by contracts. For each external service, we need to define a repo with just the contract in it, which just describes the features that all of its dependents need to consume. The contract would contain the metadata property: `isExternal: true`.
+
+```yaml
+info:
+  name: twilioApi
+  isExternal: true
+...
+```
+
 ### Service catalog
 
 <img src="assets/images/ContractMesh-Catalog.png" width="700"/>
 
-The service catalog is a microservice that aggregates all service contracts in the organization into a topology of services that *could* be deployed to any environment.
+The service catalog is a microservice that aggregates all service contracts in the organization into a topology of contracts.
 
-The catalog is populated by continuous integration. Whenever a service is built, the CI pipeline publishes the service's contract into the service catalog.
+A catalog is *not* a registry. A service registry enumerates services currently deployed to a particular environment. A service catalog, on the other hand, enumerates services and versions that are *available* to be deployed to any environment.
 
-The catalog supports multiple versions of the same contract. When CI publishes a contract to the catalog, it assigns the same version to the contract as the associated artifacts.
+The catalog is populated by continuous integration. Whenever a service is built, the CI pipeline publishes a version of the contract into the service catalog. The published contract is given the same version as the artifacts associated with it.
 
 The catalog supports querying services in flexible ways, including:
 
