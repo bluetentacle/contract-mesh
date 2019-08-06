@@ -22,7 +22,7 @@ The microservice pattern has many well-known benefits but also brings its own ch
 - **Deployment**: It's difficult to deploy an entire environment from scratch, each service having its own unique and complex deployment procedures, and the order in which services must be deployed is hard to determine.
 - **Testing**: due to the lack of a dependency graph, it's difficult to deploy and test just a subset of services in a clean environment.
 
-Many patterns have been invented to make microservices more manageable, such as service discovery, distributed tracing, API gateway, service mesh, etc. But by and large, these patterns solve problems encountered *post-deployment*, at *runtime*.
+Many patterns have been invented to make microservices more manageable, such as service discovery, distributed tracing, API gateway, service mesh, etc. But by and large, these patterns address problems encountered *post-deployment*, at *runtime*.
 
 The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of source code and artifacts of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
 
@@ -238,8 +238,10 @@ dependencies:
 ...
 ```
 
-### Serve as a design document
+### Contract as a design document
 
 The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to read and understand.
 
 Once the design is approved, it does not need to be translated to any other format for implementation; it can be immediately included in the source control repository.
+
+Since the contract is also used to generate code and configure infrastructure, it *must* be kept up to date, which is a significant benefit to its role as a design document.
