@@ -6,6 +6,7 @@
       - [Example contract](#example-contract)
       - [Authoring vs published formats](#authoring-vs-published-formats)
       - [Multiple files support](#multiple-files-support)
+      - [Extensibility](#extensibility)
     - [Service catalog](#service-catalog)
     - [Contract validator](#contract-validator)
     - [Contract editor (nice to have)](#contract-editor-nice-to-have)
@@ -219,6 +220,15 @@ features:
     v2:
       $ref: 'apis/v2.yaml'
 ```
+
+#### Extensibility
+
+The contract format is designed to be extensible. The extensibility points are:
+
+- Features
+- Dependency types
+- Artifact types
+- Custom fields in any part of the document, named with the `x-` prefix
 
 ### Service catalog
 
