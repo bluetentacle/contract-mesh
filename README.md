@@ -7,6 +7,7 @@
       - [Authoring vs published formats](#authoring-vs-published-formats)
       - [Multiple files support](#multiple-files-support)
       - [Extensibility](#extensibility)
+      - [Support for legacy and external services](#support-for-legacy-and-external-services)
     - [Service catalog](#service-catalog)
     - [Contract validator](#contract-validator)
     - [Contract editor (nice to have)](#contract-editor-nice-to-have)
