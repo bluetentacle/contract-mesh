@@ -1,16 +1,16 @@
 - [Contract Mesh: manageable microservices from the very start](#contract-mesh-manageable-microservices-from-the-very-start)
-- [Components](#components)
-  - [Service contracts](#service-contracts)
-  - [Service catalog](#service-catalog)
-  - [Contract validator](#contract-validator)
-  - [Contract editor (nice to have)](#contract-editor-nice-to-have)
-- [Use cases](#use-cases)
-  - [Developer portal](#developer-portal)
-  - [Code generation](#code-generation)
-  - [Serve as a design document](#serve-as-a-design-document)
-  - [Create an environment from scratch](#create-an-environment-from-scratch)
-  - [API gateway configuration](#api-gateway-configuration)
-  - [Configure service mesh sidecars or resiliency behavior in code](#configure-service-mesh-sidecars-or-resiliency-behavior-in-code)
+  - [Components](#components)
+    - [Service contracts](#service-contracts)
+    - [Service catalog](#service-catalog)
+    - [Contract validator](#contract-validator)
+    - [Contract editor (nice to have)](#contract-editor-nice-to-have)
+  - [Use cases](#use-cases)
+    - [Developer portal](#developer-portal)
+    - [Code generation](#code-generation)
+    - [Serve as a design document](#serve-as-a-design-document)
+    - [Create an environment from scratch](#create-an-environment-from-scratch)
+    - [API gateway configuration](#api-gateway-configuration)
+    - [Configure service mesh sidecars or resiliency behavior in code](#configure-service-mesh-sidecars-or-resiliency-behavior-in-code)
 
 # Contract Mesh: manageable microservices from the very start
 
@@ -26,11 +26,11 @@ Many patterns have been invented to make microservices more manageable, such as 
 
 The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of the myriad source code repositories of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
 
-# Components
+## Components
 
 Contract Mesh consists of the following components:
 
-## Service contracts
+### Service contracts
 
 A service contract is a YAML document with a standard format, which declares the features offered by a service, as well as the dependencies that it has on other services and resources.
 
@@ -150,7 +150,7 @@ dependencies:
   pricingService: ...
 ```
 
-## Service catalog
+### Service catalog
 
 The service catalog is a microservice that aggregates all contracts from all services available in an organization.
 
@@ -166,7 +166,7 @@ The catalog supports querying services in flexible ways, including:
 
 The catalog itself comes with a service contract; we eat our own dog food!
 
-## Contract validator
+### Contract validator
 
 The contract validator is a CLI application that calls the service catalog to validate the correctness of the contract. The validator can be run by developers manually when authoring the contract. It could also be invoked by the CI pipeline prior to publishing, to ensure that no invalid schemas are . The validator ensures that:
 
@@ -176,37 +176,31 @@ The contract validator is a CLI application that calls the service catalog to va
 - No circular depedencies are formed
 - The contract conforms to company standards
 
-## Contract editor (nice to have)
+### Contract editor (nice to have)
 
 The contract editor is a GUI application that makes it easy to write correct contracts. Alternatively, the contract can be written with any text editor with the help of the validator.
 
-# Use cases
+## Use cases
 
 The Contract Mesh is a concept that kills many birds with one stone. It enables many powerful possibilities. They include:
 
-## Developer portal
+### Developer portal
 
 The Service Catalog provides complete metadata on all available services, such as REST APIs, event schemas, log records, and metrics. A Developer portal can be written that exposes this information in an highly human-readable format. Such a portal would not need any manual mantenance.
 
-## Code generation
+### Code generation
 
 The contract can be used to automatically generate server-side code that implements the REST APIs, event schemas, log records, and metrics described in the contract. A reusable services framework can help ensure that the contract is strictly obeyed by code.
 
 Using the dependencies described in the contract, and by querying the service catalog for details about the dependencies, *client-side* code can also be generated that calls other services' APIs and consume other services' events. The services framework can ensure that the service only interacts with those services referenced in the contract.
 
-## Serve as a design document
-
-The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to read and understand.
-
-Once the design is approved, it does not need to be translated to any other format for implementation; it can be immediately included in the source control repository.
-
-## Create an environment from scratch
+### Create an environment from scratch
 
 The contract mesh fully describe the dependencies between services and this allows us to easily create an environment from scratch. It's possible to both deploy the entire microservice ecosystem, or a subset of services.
 
 Fixed testing environments will be a thing of the past. Instead of dedicated DEV, QA, INT environments that are constantly running, the contract mesh allows us to create a test environment for the duration of a test run, containly only those services that are of interest to the test, and once we are done, easily tear it down. These environments can be used for both manual testing and automated testing.
 
-## API gateway configuration
+### API gateway configuration
 
 API gateways is an essential part of any microservice architecture. However, the gateway's configuration is usually separate from the deployment of services, thus adding to deployment complexity.
 
@@ -223,7 +217,7 @@ The service contract is a natuarl location for API gateway configuration. By add
 
 When the service is deployed to an environment, the API gateway in that environment can retrieve its contract. It can then look for those endpoints with gateway exposure enabled, and configure itself accordingly.
 
-## Configure service mesh sidecars or resiliency behavior in code
+### Configure service mesh sidecars or resiliency behavior in code
 
 Sidecars are a definitive feature of a service mesh that provides invocation resiliency between services. Just like the API Gateway, naive implementations of service mesh requires it to be configured separately from services themselves, adding to deployment complexity and management challenges.
 
@@ -243,3 +237,9 @@ dependencies:
             threshold: 10
 ...
 ```
+
+### Serve as a design document
+
+The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to read and understand.
+
+Once the design is approved, it does not need to be translated to any other format for implementation; it can be immediately included in the source control repository.
