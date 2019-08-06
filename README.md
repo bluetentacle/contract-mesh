@@ -32,7 +32,7 @@ Contract Mesh consists of the following components:
 
 ### Service contracts
 
-![contracts](assets/images/ContractMesh-Contracts.png)
+<img src="assets/images/ContractMesh-Contracts.png" width="500"/>
 
 A service contract is a YAML document with a *standard format*, which declares the *features* offered by a service, as well as the *dependencies* that it has on other services and resources.
 
@@ -169,7 +169,7 @@ dependencies:
 
 ### Service catalog
 
-![catalog](assets/images/ContractMesh-Catalog.png =300x)
+<img src="assets/images/ContractMesh-Catalog.png" width="500"/>
 
 The service catalog is a microservice that aggregates all contracts from all services available in an organization.
 
