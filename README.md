@@ -12,7 +12,7 @@
     - [API gateway configuration](#api-gateway-configuration)
     - [Configure service mesh sidecars or resiliency behavior in code](#configure-service-mesh-sidecars-or-resiliency-behavior-in-code)
 
-# Contract Mesh: manageable microservices from the very start
+# Contract Mesh: manageable microservices from the start
 
 The microservice pattern has many well-known benefits but also brings its own challenges. As the number of microservices increase in a company, the following manageability issues emerge:
 
@@ -24,7 +24,7 @@ The microservice pattern has many well-known benefits but also brings its own ch
 
 Many patterns have been invented to make microservices more manageable, such as service discovery, distributed tracing, API gateway, service mesh, etc. But by and large, these patterns solve problems encountered *post-deployment*, at *runtime*.
 
-The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of the myriad source code repositories of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
+The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of source code and artifacts of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
 
 ## Components
 
