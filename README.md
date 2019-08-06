@@ -24,11 +24,11 @@ The microservice pattern has many well-known benefits but also brings its own ch
 
 Many patterns have been invented to make microservices more manageable, such as service discovery, distributed tracing, API gateway, service mesh, etc. But by and large, these patterns solve problems encountered *post-deployment*, at *runtime*.
 
-The reality is though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of the source code and artifacts of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
+The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of the source code and artifacts of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
 
 # Components
 
-The Contract Mesh consists of the following components:
+Contract Mesh consists of the following components:
 
 ## Service contracts
 
@@ -40,7 +40,6 @@ The contract is authored by the developer, *prior* to writing service code.
 
 Specifically, the document contains:
 
-- Basic metadata about the service, such as name, version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
 - **Features** that the service provides to the outside world, including:
   - Schemas of business entities owned by the service and referenced by REST API, events, and other features
   - REST API definition, provided in the standard OpenAPI format, embedded inside the contract document
@@ -51,6 +50,7 @@ Specifically, the document contains:
   - Required version range of the service
   - Specific abilities of the service that are utilized, such as REST API endpoints and events
   - Resiliency requirements for the dependency, such as the timeout, number of retries, circuit-breaker thresholds, etc.
+- **Metadata** about the service, such as name, version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
 
 A contract looks like the following:
 
@@ -192,17 +192,17 @@ The Service Catalog provides complete metadata on all available services, such a
 
 The contract can be used to automatically generate server-side code that implements the REST APIs, event schemas, log records, and metrics described in the contract. A reusable services framework can help ensure that the contract is strictly obeyed by code.
 
-Using the dependencies described in the contract, and by querying the service catalog for details about the dependencies, *client-side* code can also be generated that calls other services' APIs and consume other services' events.
+Using the dependencies described in the contract, and by querying the service catalog for details about the dependencies, *client-side* code can also be generated that calls other services' APIs and consume other services' events. The services framework can ensure that the service only interacts with those services referenced in the contract.
 
 ## Serve as a design document
 
-The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it well suited for 
+The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to understand. Once the design is approved, it does not need to be translated to any other format during implementation; it can be immediately included in the source control repository.
 
 ## Help deploy an entire environment from scratch
 
 The contract mesh fully describe the dependencies between services and this allows us to easily create an environment from scratch. It's possible to both deploy the entire microservice ecosystem, or a subset of services.
 
-Fixed testing environments will be a thing of the past. Instead of dedicated DEV, QA, INT environments that are constantly running, the contract mesh allows us to create a test environment for the duration of a test run, and tear it down when we are done. These environments can be used for both manual testing and automated testing.
+Fixed testing environments will be a thing of the past. Instead of dedicated DEV, QA, INT environments that are constantly running, the contract mesh allows us to create a test environment for the duration of a test run, containly only those services that are of interest to the test, and once we are done, easily tear it down. These environments can be used for both manual testing and automated testing.
 
 ## API gateway configuration
 
