@@ -132,7 +132,6 @@ features:
           openId:
             type: openIdConnect
             openIdConnectUrl: https://example.com/.well-known/openid-configuration
-    v2: ...
   events:
     order.created
       v1:
@@ -162,9 +161,36 @@ dependencies:
           retries: 3
           circuitBreaker:
             threshold: 10
+  pricingService:
+    version: 2.0
     events:
-      product.updated: ~
-  pricingService: ...
+      pricing.updated: ~
+```
+
+In case the contract too long, the format supports breaking it into multiple files. For example, given the following folder structure:
+
+```
+contract
+|   main.yaml
+└───apis
+|   |   v1.yaml
+|   |   api-v2.yaml
+└───entities
+    |   order.yaml
+```
+
+...the `main.yaml` would reference other files this way:
+
+```yaml
+features:
+  entities:
+    order:
+      $ref: 'entities/order.yaml'
+  apis:
+    v1:
+      $ref: 'apis/v1.yaml'
+    v2:
+      $ref: 'apis/v2.yaml'
 ```
 
 ### Service catalog
