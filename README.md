@@ -72,14 +72,15 @@ Here's an example of an actual contract:
 
 ```yaml
 contractFormat: 1
-category: dom
-name: orderService
-# BEGIN CI-provided fields
-version: 1.2.3.456
-source: http://github.acme.com/business/orders-service/tree/v1.2.3.456
-artifacts:
-  docker: docker.acme.com/orders-service:v1.2.3.456
-# END CI-provided fields
+info:
+  category: dom
+  name: orderService
+  # BEGIN CI-provided fields
+  version: 1.2.3.456
+  source: http://github.acme.com/business/orders-service/tree/v1.2.3.456
+  artifacts:
+    docker: docker.acme.com/orders-service:v1.2.3.456
+  # END CI-provided fields
 features:
   entities:
     order:
