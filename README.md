@@ -1,4 +1,4 @@
-- [Contract Mesh: manageable microservices from the very start](#contract-mesh-manageable-microservices-from-the-very-start)
+- [Contract Mesh: manageable microservices from the start](#contract-mesh-manageable-microservices-from-the-start)
   - [Components](#components)
     - [Service contracts](#service-contracts)
     - [Service catalog](#service-catalog)
@@ -7,10 +7,10 @@
   - [Use cases](#use-cases)
     - [Developer portal](#developer-portal)
     - [Code generation](#code-generation)
-    - [Serve as a design document](#serve-as-a-design-document)
     - [Create an environment from scratch](#create-an-environment-from-scratch)
-    - [API gateway configuration](#api-gateway-configuration)
+    - [Configure the API gateway](#configure-the-api-gateway)
     - [Configure service mesh sidecars or resiliency behavior in code](#configure-service-mesh-sidecars-or-resiliency-behavior-in-code)
+    - [Contract as a design document](#contract-as-a-design-document)
 
 # Contract Mesh: manageable microservices from the start
 
@@ -32,18 +32,22 @@ Contract Mesh consists of the following components:
 
 ### Service contracts
 
-A service contract is a YAML document with a standard format, which declares the features offered by a service, as well as the dependencies that it has on other services and resources.
+![contracts](assets/images/ContractMesh-Contracts.png)
 
-Each microservice shall declare a contract in this standard format, residing in a standard location in the service's source code repository.
+A service contract is a YAML document with a *standard format*, which declares the *features* offered by a service, as well as the *dependencies* that it has on other services and resources.
+
+Contracts are declared in a *decentralized* manner by each service, but eventually aggregated by the [service catalog](#service-catalog) into a topology, or "mesh", of interdependent contracts. Hence the name of the pattern--Contract Mesh.
+
+Each microservice's contract resides in a standard location in the service's source code repository. For example, `/contract/main.yaml`
 
 The contract is authored by the developer, *prior* to writing service code.
 
 Specifically, the document contains:
 
 - **Features** that the service provides to the outside world, including:
-  - Schemas of business entities owned by the service and referenced by REST API, events, and other features
-  - REST API definition, provided in the standard OpenAPI format, embedded inside the contract document
-  - Event definition, including topics and body schemas
+  - Schemas of business entities owned by the service and referenced by REST API, events, and other features. Single-segment versioning is supported.
+  - REST API specification, provided in the standard OpenAPI format. Single-segment versioning is supported.
+  - Event specification, including topics and body schemas. Single-segment versioning is supported.
   - Metrics published by the service to a centralized telemetry platform
   - Log record schemas published by the service into a central logging platform
 - **Dependencies** on other services. Each dependency specifies:
@@ -59,10 +63,12 @@ contractFormat: 1
 info:
   category: dom
   name: orderService
+  # BEGIN CI-provided fields
   version: 1.2.3.456
   source: http://github.acme.com/business/orders-service/tree/v1.2.3.456
   artifacts:
     docker: docker.acme.com/orders-service:v1.2.3.456
+  # END CI-provided fields
 features:
   entities:
     order:
@@ -101,6 +107,8 @@ features:
                   application/json
                     schema:
                       $ref: '#/features/entities/order/v1'
+            security:
+              - openId: [read-orders]
         /orders:
           post:
             operationId: postOrder
@@ -117,6 +125,13 @@ features:
                       properties:
                         id:
                           type: int
+            security:
+              - openId: [write-orders]
+      components:
+        securitySchemes:
+          openId:
+            type: openIdConnect
+            openIdConnectUrl: https://example.com/.well-known/openid-configuration
     v2: ...
   events:
     order.created
@@ -147,10 +162,14 @@ dependencies:
           retries: 3
           circuitBreaker:
             threshold: 10
+    events:
+      product.updated: ~
   pricingService: ...
 ```
 
 ### Service catalog
+
+![catalog](assets/images/ContractMesh-Catalog.png =300x)
 
 The service catalog is a microservice that aggregates all contracts from all services available in an organization.
 
@@ -194,17 +213,19 @@ The contract can be used to automatically generate server-side code that impleme
 
 Using the dependencies described in the contract, and by querying the service catalog for details about the dependencies, *client-side* code can also be generated that calls other services' APIs and consume other services' events. The services framework can ensure that the service only interacts with those services referenced in the contract.
 
+The client interface created by codegen can transparently obtain and cache access tokens. Codegen can read the security specification in the API specification of a referenced service to discover its authentication scheme, and call the identity server to obtain a token with the scopes required by an API endpoint.
+
 ### Create an environment from scratch
 
 The contract mesh fully describe the dependencies between services and this allows us to easily create an environment from scratch. It's possible to both deploy the entire microservice ecosystem, or a subset of services.
 
 Fixed testing environments will be a thing of the past. Instead of dedicated DEV, QA, INT environments that are constantly running, the contract mesh allows us to create a test environment for the duration of a test run, containly only those services that are of interest to the test, and once we are done, easily tear it down. These environments can be used for both manual testing and automated testing.
 
-### API gateway configuration
+### Configure the API gateway
 
 API gateways is an essential part of any microservice architecture. However, the gateway's configuration is usually separate from the deployment of services, thus adding to deployment complexity.
 
-The service contract is a natuarl location for API gateway configuration. By adding a custom field to the OpenAPI document such as `x-api-gateway`, the contract author can decide which endpoints to expose to the gateway:
+The service contract is a natural location for API gateway configuration. By adding a custom field to the OpenAPI document such as `x-api-gateway`, the contract author can decide which endpoints to expose to the gateway:
 
 ```yaml
 ...
