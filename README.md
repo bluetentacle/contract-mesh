@@ -5,6 +5,7 @@
       - [Contract contents](#contract-contents)
       - [Example contract](#example-contract)
       - [Authoring vs published formats](#authoring-vs-published-formats)
+      - [Multiple files support](#multiple-files-support)
     - [Service catalog](#service-catalog)
     - [Contract validator](#contract-validator)
     - [Contract editor (nice to have)](#contract-editor-nice-to-have)
@@ -60,7 +61,7 @@ Specifically, the contract contains:
   - Required version range of the service
   - Specific abilities of the service that are utilized, such as REST API endpoints and events
   - Resiliency requirements for the dependency, such as the timeout, number of retries, circuit-breaker thresholds, etc.
-- **Metadata** about the service, such as name, version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
+- **Metadata** about the service, such as name, semantic version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
 
 Throughout the contract, whenever an object schema needs to be defined, JSON schemas expressed in YAML syntax are used.
 
@@ -191,7 +192,8 @@ The standard format has two sub-formats: the authoring format, and the published
   - Aggregated into a single document during publishing
   - Always contains the metadata fields `version`, `artifacts`, and `source`
 
-####
+#### Multiple files support
+
 In case the contract becomes too long, the format supports breaking it into multiple files. For example, given the following folder structure:
 
 ```
