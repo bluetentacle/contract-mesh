@@ -154,9 +154,9 @@ dependencies:
 
 The service catalog is a microservice that aggregates all contracts from all services available in an organization.
 
-The catalog is populated by continuous integration. Whenever a service is built, the CI pipeline publishes the artifacts (Docker images, binaries, Nuget packages, etc), as well as the service's contract into the catalog.
+The catalog is populated by continuous integration. Whenever a service is built, the CI pipeline publishes the service's contract into the service catalog.
 
-The catalog supports versioning. When CI publishes the contract to the catalog, it assigns the same version to the contract as the associated artifacts.
+The catalog supports multiple versions of the same contract. When CI publishes a contract to the catalog, it assigns the same version to the contract as the associated artifacts.
 
 The catalog supports querying services in flexible ways, including:
 
@@ -164,11 +164,11 @@ The catalog supports querying services in flexible ways, including:
 - Given a service of a particular vesion, return a subset of dependency graph of the service and all of its direct and indirect dependencies
 - Return a subset of a contract, such as only the REST API
 
-The catalog itself comes with a service contract; we eat our own dog food!
+The catalog itself comes with a service contract.
 
 ### Contract validator
 
-The contract validator is a CLI application that calls the service catalog to validate the correctness of the contract. The validator can be run by developers manually when authoring the contract. It could also be invoked by the CI pipeline prior to publishing, to ensure that no invalid schemas are . The validator ensures that:
+The contract validator is a CLI application that calls the service catalog to validate the correctness of the contract. The validator could be run by developers manually when authoring the contract. It could also be invoked by the CI pipeline prior to publishing. The validator ensures that:
 
 - The contract syntax is correct, and required information is provided
 - Breaking changes to the contract are not made without versioning
@@ -186,7 +186,7 @@ The Contract Mesh is a concept that kills many birds with one stone. It enables 
 
 ### Developer portal
 
-The Service Catalog provides complete metadata on all available services, such as REST APIs, event schemas, log records, and metrics. A Developer portal can be written that exposes this information in an highly human-readable format. Such a portal would not need any manual mantenance.
+The Service Catalog provides complete metadata on all available services, such as REST APIs, event schemas, log records, and metrics. A Developer portal can be written that exposes this information in an highly human-readable format. Such a portal would need significantly less manual maintenance.
 
 ### Code generation
 
