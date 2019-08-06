@@ -238,6 +238,8 @@ dependencies:
 ...
 ```
 
+The resiliency specification is not specific to any resiliency product. If a service mesh is not used, the specification can still be used by the code generator to add resiliency behavior in client-side code using such libraries as resiliency4j and Polly.
+
 ### Contract as a design document
 
 The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to read and understand.
