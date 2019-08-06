@@ -38,11 +38,13 @@ A service contract is a YAML document with a *standard format*, which declares t
 
 Contracts are declared in a *decentralized* manner by each service, but eventually aggregated by the [service catalog](#service-catalog) into a topology, or "mesh", of interdependent contracts. Hence the name of the pattern--Contract Mesh.
 
-Each microservice's contract resides in a standard location in the service's source code repository. For example, `/contract/main.yaml`
+#### Contract location
+Each microservice's contract resides in a standard location in the service's source code repository. If the contract consists of one file, the convention is `/contract.yaml`; if the contract is broken into multiple files, the convention is a `/contract` folder containing a `main.yaml` file, along with other YAML files that the main file references.
 
 The contract is authored by the developer, *prior* to writing service code.
 
-Specifically, the document contains:
+#### Contract contents
+Specifically, the contract contains:
 
 - **Features** that the service provides to the outside world, including:
   - Schemas of business entities owned by the service and referenced by REST API, events, and other features. Single-segment versioning is supported.
@@ -56,7 +58,9 @@ Specifically, the document contains:
   - Resiliency requirements for the dependency, such as the timeout, number of retries, circuit-breaker thresholds, etc.
 - **Metadata** about the service, such as name, version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
 
-A contract looks like the following:
+#### Example contract
+
+Here's an example of an actual contract:
 
 ```yaml
 contractFormat: 1
@@ -167,7 +171,22 @@ dependencies:
       pricing.updated: ~
 ```
 
-In case the contract too long, the format supports breaking it into multiple files. For example, given the following folder structure:
+#### Authoring vs published formats
+
+The standard format has two sub-formats: the authoring format, and the published format.
+
+- **Authoring format**:
+  - Kept in source control
+  - May be broken into multiple documents
+  - Must not contain metadata fields reserved for the published version, including `version`, `artifacts`, and `source`
+- **Published format**:
+  - Generated from the authoring format
+  - Kept in the service catalog
+  - Aggregated into a single document during publishing
+  - Always contains the metadata fields `version`, `artifacts`, and `source`
+
+####
+In case the contract becomes too long, the format supports breaking it into multiple files. For example, given the following folder structure:
 
 ```
 contract
