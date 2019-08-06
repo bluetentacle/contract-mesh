@@ -72,10 +72,10 @@ Throughout the contract, whenever an object schema needs to be defined, JSON sch
 Here's an example of an actual contract:
 
 ```yaml
-contractFormat: 1
+serviceContract: 1.0.0
 info:
-  category: dom
   name: orderService
+  category: domain
   # BEGIN CI-provided fields
   version: 1.2.3.456
   source: http://github.acme.com/business/orders-service/tree/v1.2.3.456
@@ -88,7 +88,7 @@ features:
       v1:
         required:
           - id
-          - product-name
+          - productName
           - price
         properties:
           id:
@@ -148,7 +148,6 @@ features:
   events:
     order.created
       v1:
-        action: produce
         schema:
           $ref: '#/features/entities/order/v1'
   metrics:
@@ -183,7 +182,18 @@ dependencies:
       events:
         pricing.updated:
           v1:
-            action: consume
+            consumer:
+              retryQueues:
+                a: { delay: 1s }
+                b: { delay: 10s }
+              failurePolicies:
+                - action: queuedRetry
+                  retryQueue: a
+                  maxAttempts: 1
+                - action: queuedRetry
+                  retryQueue: b
+                  maxAttempts: 1
+                - action: discard
 ```
 
 #### Authoring vs published formats
@@ -239,14 +249,14 @@ The contract format is designed to be extensible. The extensibility points are:
 
 #### Support for legacy and external services
 
-The service contract is not simply for new services that are built ground-up upon it. Legacy services of any type can also have contracts retroactively for them. These contracts most likely aren't used to generate code, but they can serve all other use cases.
+The service contract is not simply for new services that are built ground-up upon it. Legacy services of any type can also have contracts retroactively for them. These contracts must be translated from existing code--by and--and most likely aren't used to generate code. But they can serve all other use cases.
 
-External services, such as those provided by third-party SaaS, can also be represented by contracts. For each external service, we need to define a repo with just the contract in it, which just describes the features that all of its dependents need to consume. The contract would contain the metadata property: `isExternal: true`.
+External services, such as those provided by third-party SaaS, can also be represented by contracts. For each external service, we need to define a repo with just the contract in it, which just describes the features that all of its dependents need to consume. The contract would contain the metadata property: `category: external`.
 
 ```yaml
 info:
   name: twilioApi
-  isExternal: true
+  category: external
 ...
 ```
 
