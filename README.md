@@ -51,7 +51,7 @@ The contract is authored by the developer, *prior* to writing service code.
 Specifically, the contract contains:
 
 - **Features** that the service provides to the outside world, including:
-  - Schemas of business entities owned by the service and referenced by REST API, events, and other features. Single-segment versioning is supported.
+  - JSON schemas of business entities owned by the service and referenced by REST API, events, and other features. Single-segment versioning is supported.
   - REST API specification, provided in the standard OpenAPI format. Single-segment versioning is supported.
   - Event specification, including topics and body schemas. Single-segment versioning is supported.
   - Metrics published by the service to a centralized telemetry platform
@@ -61,6 +61,8 @@ Specifically, the contract contains:
   - Specific abilities of the service that are utilized, such as REST API endpoints and events
   - Resiliency requirements for the dependency, such as the timeout, number of retries, circuit-breaker thresholds, etc.
 - **Metadata** about the service, such as name, version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
+
+Throughout the contract, whenever an object schema needs to be defined, JSON schemas expressed in YAML syntax are used.
 
 #### Example contract
 
