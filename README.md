@@ -1,4 +1,4 @@
-- [Contract Mesh: manageable microservices from the start](#contract-mesh-manageable-microservices-from-the-start)
+- [Contract Mesh: making microservices manageable from the start](#contract-mesh-making-microservices-manageable-from-the-start)
   - [Components](#components)
     - [Service contracts](#service-contracts)
       - [Contract location](#contract-location)
