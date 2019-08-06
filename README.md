@@ -18,7 +18,7 @@
     - [Configure service mesh sidecars or resiliency behavior in code](#configure-service-mesh-sidecars-or-resiliency-behavior-in-code)
     - [Contract as a design document](#contract-as-a-design-document)
 
-# Contract Mesh: manageable microservices from the start
+# Contract Mesh: making microservices manageable from the start
 
 The microservice pattern has many well-known benefits but also brings its own challenges. As the number of microservices increase in a company, the following manageability issues emerge:
 
@@ -30,7 +30,7 @@ The microservice pattern has many well-known benefits but also brings its own ch
 
 Many patterns have been invented to make microservices more manageable, such as service discovery, distributed tracing, API gateway, service mesh, etc. But by and large, these patterns address problems encountered *post-deployment*, at *runtime*.
 
-The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of source code and artifacts of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
+The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed; it's just as challenging to make sense of source code and artifacts of microservices as it is to herd deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
 
 ## Components
 
@@ -40,7 +40,7 @@ Contract Mesh consists of the following components:
 
 <img src="assets/images/ContractMesh-Contracts.png" width="500"/>
 
-A service contract is a YAML document with a *standard format*, which declares the *features* offered by a service, as well as the *dependencies* that it has on other services and resources.
+A service contract is a YAML document with a *standard format*, which declares the features offered by a service, as well as the dependencies that it has on other services and resources.
 
 Contracts are declared in a *decentralized* manner by each service, but eventually aggregated by the [service catalog](#service-catalog) into a topology, or "mesh", of interdependent contracts. Hence the name of the pattern--Contract Mesh.
 
