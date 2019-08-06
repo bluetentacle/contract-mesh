@@ -147,6 +147,7 @@ features:
   events:
     order.created
       v1:
+        action: produce
         schema:
           $ref: '#/features/entities/order/v1'
   metrics:
@@ -169,17 +170,20 @@ dependencies:
       version: 1.3
       features:
         apis:
-          getProductById:
-            resiliency:
-              timeout: 10s
-              retries: 3
-              circuitBreaker:
-                threshold: 10
+          v1:
+            getProductById:
+              resiliency:
+                timeout: 10s
+                retries: 3
+                circuitBreaker:
+                  threshold: 10
     pricingService:
       version: 2.0
       features:
         events:
-          pricing.updated: ~
+          pricing.updated:
+            v1:
+              action: consume
 ```
 
 #### Authoring vs published formats
@@ -267,7 +271,7 @@ The contract editor is a GUI application that makes it easy to write correct con
 
 ## Use cases
 
-The Contract Mesh is a concept that kills many birds with one stone. It enables many powerful possibilities. They include:
+The Contract Mesh is a powerful concept that has many use cases. They include:
 
 ### Developer portal
 
