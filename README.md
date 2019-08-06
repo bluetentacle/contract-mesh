@@ -16,7 +16,7 @@
 
 The microservice pattern has many well-known benefits but also brings its own challenges. As the number of microservices increase in a company, the following manageability issues emerge:
 
-- **Discoverability**: It's difficult for human actors to discover what services are available in the organization, what the capabilities of these services are, and the versions of each service that are available.
+- **Discoverability**: It's difficult for human actors to discover what services are available in the organization, what the capabilities of these services are, and the versions of each service that are historically available.
 - **Documentation**: There's no centralized source of documentation for these services that can act as a developer portal; even if a portal existed, it often required manual updates.
 - **Dependency management**: It's difficult to determine the dependencies of each service, and versions of these dependencies.
 - **Deployment**: It's difficult to deploy an entire environment from scratch, each service having its own unique and complex deployment procedures, and the order in which services must be deployed is hard to determine.
