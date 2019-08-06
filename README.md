@@ -8,7 +8,7 @@
   - [Developer portal](#developer-portal)
   - [Code generation](#code-generation)
   - [Serve as a design document](#serve-as-a-design-document)
-  - [Help deploy an entire environment from scratch](#help-deploy-an-entire-environment-from-scratch)
+  - [Create an environment from scratch](#create-an-environment-from-scratch)
   - [API gateway configuration](#api-gateway-configuration)
   - [Configure service mesh sidecars or resiliency behavior in code](#configure-service-mesh-sidecars-or-resiliency-behavior-in-code)
 
@@ -24,7 +24,7 @@ The microservice pattern has many well-known benefits but also brings its own ch
 
 Many patterns have been invented to make microservices more manageable, such as service discovery, distributed tracing, API gateway, service mesh, etc. But by and large, these patterns solve problems encountered *post-deployment*, at *runtime*.
 
-The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of the source code and artifacts of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
+The reality is, though, that the complexity of a microservice ecosystem has long started before anything is deployed, and that it's just as challenging to make sense of the myriad source code repositories of microservices as it is to manage deployed instances. No pattern currently exists to make the pre-deployment life cycle of microservices more manageable. Contract Mesh is intended to fill this void.
 
 # Components
 
@@ -196,9 +196,11 @@ Using the dependencies described in the contract, and by querying the service ca
 
 ## Serve as a design document
 
-The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to understand. Once the design is approved, it does not need to be translated to any other format during implementation; it can be immediately included in the source control repository.
+The contract, produced before any code is written, can serve as a design document. Its high-level nature makes it easy to read and understand.
 
-## Help deploy an entire environment from scratch
+Once the design is approved, it does not need to be translated to any other format for implementation; it can be immediately included in the source control repository.
+
+## Create an environment from scratch
 
 The contract mesh fully describe the dependencies between services and this allows us to easily create an environment from scratch. It's possible to both deploy the entire microservice ecosystem, or a subset of services.
 
@@ -219,7 +221,7 @@ The service contract is a natuarl location for API gateway configuration. By add
 ...
 ```
 
-When the service is deployed to an environment, the API gateway in that environment can use service discovery to obtain a list of all services and retrieve their contracts. It looks for those endpoints with gateway exposure enabled, and configure itself accordingly.
+When the service is deployed to an environment, the API gateway in that environment can retrieve its contract. It can then look for those endpoints with gateway exposure enabled, and configure itself accordingly.
 
 ## Configure service mesh sidecars or resiliency behavior in code
 
