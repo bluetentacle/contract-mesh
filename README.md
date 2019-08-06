@@ -28,11 +28,45 @@ The contract looks like the following:
 
 ```yaml
 info:
-  ...
+  format-version: 1.0
+  version: 1.2.3.456
+  name: orders-service
+  source: http://github.acme.com/business/orders-service/tree/v1.2.3.456
+  artifacts:
+    docker: docker.acme.com/orders-service:v1.2.3.456
 apis:
-  ...
+  v1:
+    info:
+      basePath: /v1
+      paths:
+        /orders/{OrderId}:
+          get: ...
+          put: ...
+          patch: ...
+        /orders:
+          get: ...
+          post: ...
+  v2: ...
 events:
-  ...
+  order.created
+    v1:
+      $ref: #/entities/order
+entities:
+  order:
+    required:
+      - id
+      - product-name
+      - price
+    properties:
+      id:
+        type: int,
+        description: The unique identifier of this order
+      product-name:
+        type: string,
+        description: The name of the project being ordered
+      price:
+        type: float
+        description: The price of this order 
 metrics:
   ...
 log-records:
@@ -56,6 +90,7 @@ Specifically, the document contains:
   - Event definition, including topics and body schemas
   - Metrics published by the service to a centralized telemetry platform
   - Log record schemas published by the service into a central logging platform
+  - Business entities referenced by REST API, events, and other features
 - Dependencies on other services. Each dependency specifies
   - Required version range of the service 
   - Specific abilities of the service that are utilized, such as REST API endpoints and events
@@ -82,6 +117,9 @@ The contract validator is a CLI application that validates the correctness of th
 - Breaking changes to the contract are not made without versioning
 - Dependencies are correctly named and actually exist in the service catalog
 - No circular depedencies are formed
+- The contract conforms to company standards
+
+The validator should be extensible, so that more validation rules can be added without 
 
 ## Contract editor (nice to have)
 
@@ -97,11 +135,13 @@ The Service Catalog provides complete metadata on all available services, such a
 
 ## Code generation
 
-The contract can be used to generate server-code that implements the REST APIs, event schemas, log records, and metrics described in the contract. A reusable services framework can help ensure that the contract is strictly obeyed by code.
+The contract can be used to automatically generate server-side code that implements the REST APIs, event schemas, log records, and metrics described in the contract. A reusable services framework can help ensure that the contract is strictly obeyed by code.
 
-Using the dependencies described in the contract, *client-side* code can also be generated that calls other services' APIs and consume other services' events.
+Using the dependencies described in the contract, and by querying the service catalog for details about the dependencies, *client-side* code can also be generated that calls other services' APIs and consume other services' events.
 
 ## Serve as a design document
+
+The contract, produced before any code is written, can serve as a wonderful of a service design.
 
 ## Help deploy an entire environment from scratch
 
