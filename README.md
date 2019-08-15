@@ -4,7 +4,6 @@
       - [Contract location](#contract-location)
       - [Contract contents](#contract-contents)
       - [Example contract](#example-contract)
-      - [Authoring vs published formats](#authoring-vs-published-formats)
       - [Multiple files support](#multiple-files-support)
       - [Extensibility](#extensibility)
       - [Support for legacy and external services](#support-for-legacy-and-external-services)
