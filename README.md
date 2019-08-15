@@ -78,10 +78,9 @@ info:
   description: A service that manages orders and related entities in the pet shop.
 features:
   apis:
-    v1:
-      $ref: apiv1.yaml
+    $ref: api.yaml # OpenAPI document
   events:
-    $ref: events.yaml # Open    
+    $ref: events.yaml # AsyncAPI document
   metrics:
     orderCount:
       type: counter
