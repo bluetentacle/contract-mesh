@@ -53,8 +53,8 @@ The contract is authored by the developer, *prior* to writing service code.
 Specifically, the contract contains:
 
 - **Features** that the service provides to the outside world, including:
-  - REST API specification, provided in the standard OpenAPI format. Single-segment versioning is supported.
-  - Event specification, including topics and body schemas. Single-segment versioning is supported.
+  - REST API specification, provided in the standard [OpenAPI](https://www.openapis.org/) format
+  - Event specification in the [AsyncAPI](https://www.asyncapi.com/) format
   - Metrics published by the service to a centralized telemetry platform
   - Log record schemas published by the service into a central logging platform
 - **Dependencies** on other services. Each dependency specifies:
