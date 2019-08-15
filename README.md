@@ -55,8 +55,8 @@ Specifically, the contract contains:
 - **Features** that the service provides to the outside world, including:
   - REST API specification, provided in the standard [OpenAPI](https://www.openapis.org/) format
   - Event specification in the [AsyncAPI](https://www.asyncapi.com/) format
-  - Metrics published by the service to a centralized telemetry platform
-  - Log record schemas published by the service into a central logging platform
+  - Metrics published by the service to a centralized telemetry platform, in [JSON Schema](https://json-schema.org/) format
+  - Log record schemas published by the service into a central logging platform, in [JSON Schema](https://json-schema.org/) format
 - **Dependencies** on other services. Each dependency specifies:
   - Required version range of the service
   - Specific abilities of the service that are utilized, such as REST API endpoints and events
