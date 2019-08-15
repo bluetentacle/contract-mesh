@@ -54,7 +54,6 @@ The contract is authored by the developer, *prior* to writing service code.
 Specifically, the contract contains:
 
 - **Features** that the service provides to the outside world, including:
-  - JSON schemas of business entities owned by the service and referenced by REST API, events, and other features. Single-segment versioning is supported.
   - REST API specification, provided in the standard OpenAPI format. Single-segment versioning is supported.
   - Event specification, including topics and body schemas. Single-segment versioning is supported.
   - Metrics published by the service to a centralized telemetry platform
@@ -62,8 +61,8 @@ Specifically, the contract contains:
 - **Dependencies** on other services. Each dependency specifies:
   - Required version range of the service
   - Specific abilities of the service that are utilized, such as REST API endpoints and events
-  - Resiliency requirements for the dependency, such as the timeout, number of retries, circuit-breaker thresholds, etc.
-- **Metadata** about the service, such as name, semantic version, SCM tag, artifact location, etc. (The last three pieces of information can be filled by by the CI pipeline and shouldn't be specified by the author.)
+  - (Possibly) Resiliency requirements for the dependency, such as the timeout, number of retries, circuit-breaker thresholds, etc.
+- **Metadata** about the service, such as name and description
 
 Throughout the contract, whenever an object schema needs to be defined, JSON schemas expressed in YAML syntax are used.
 
@@ -75,81 +74,15 @@ Here's an example of an actual contract:
 serviceContract: 1.0.0
 info:
   name: orderService
+  context: Petshop
   category: domain
-  # BEGIN CI-provided fields
-  version: 1.2.3.456
-  source: http://github.acme.com/business/orders-service/tree/v1.2.3.456
-  artifacts:
-    docker: docker.acme.com/orders-service:v1.2.3.456
-  # END CI-provided fields
+  description: A service that manages orders and related entities in the pet shop.
 features:
-  entities:
-    order:
-      v1:
-        required:
-          - id
-          - productName
-          - price
-        properties:
-          id:
-            type: int,
-            description: The unique identifier of this order
-          productName:
-            type: string,
-            description: The name of the project being ordered
-          price:
-            type: float
-            description: The price of this order
   apis:
     v1:
-      openapi: 3.0.0
-      paths:
-        /orders/{orderId}:
-          get:
-            operationId: getOrderById
-            x-api-gateway: true
-            parameters:
-              - name: orderId
-                in: path
-                schema:
-                  type: integer
-                  format: int64
-            responses:
-              200:
-                content:
-                  application/json
-                    schema:
-                      $ref: '#/features/entities/order/v1'
-            security:
-              - openId: [read-orders]
-        /orders:
-          post:
-            operationId: postOrder
-            requestBody:
-              content:
-                application/json
-                  schema:
-                    $ref: '#/features/entities/order/v1'
-            responses:
-              200:
-                content:
-                  application/json:
-                    schema:
-                      properties:
-                        id:
-                          type: int
-            security:
-              - openId: [write-orders]
-      components:
-        securitySchemes:
-          openId:
-            type: openIdConnect
-            openIdConnectUrl: https://example.com/.well-known/openid-configuration
+      $ref: apiv1.yaml
   events:
-    order.created
-      v1:
-        schema:
-          $ref: '#/features/entities/order/v1'
+    $ref: events.yaml # Open    
   metrics:
     orderCount:
       type: counter
@@ -170,45 +103,13 @@ dependencies:
     features:
       apis:
         v1:
-          getProductById:
-            resiliency:
-              timeout: 10s
-              retries: 3
-              circuitBreaker:
-                threshold: 10
+          - getProductById
   pricingService:
     version: 2.0
     features:
       events:
-        pricing.updated:
-          v1:
-            consumer:
-              retryQueues:
-                a: { delay: 1s }
-                b: { delay: 10s }
-              failurePolicies:
-                - action: queuedRetry
-                  retryQueue: a
-                  maxAttempts: 1
-                - action: queuedRetry
-                  retryQueue: b
-                  maxAttempts: 1
-                - action: discard
+        - pricing.updated
 ```
-
-#### Authoring vs published formats
-
-The standard format has two sub-formats: the authoring format, and the published format.
-
-- **Authoring format**:
-  - Kept in source control
-  - May be broken into multiple documents
-  - Must not contain metadata fields reserved for the published version, including `version`, `artifacts`, and `source`
-- **Published format**:
-  - Generated from the authoring format
-  - Kept in the service catalog
-  - Aggregated into a single document during publishing
-  - Always contains the metadata fields `version`, `artifacts`, and `source`
 
 #### Multiple files support
 
